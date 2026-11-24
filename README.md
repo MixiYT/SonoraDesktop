@@ -1,17 +1,25 @@
-# SonoraDesktop
+# Sonora для Windows
 
-Sonora — музыкальный плеер с поддержкой Яндекс Музыки, «Моей волны» и синхронизированных текстов.
+Sonora — музыкальный плеер для Windows 10/11 x64 с WebView2. Готовые установщики находятся в [Releases](https://github.com/MixiYT/SonoraDesktop/releases).
 
-## Установка
+## Сборка из исходников
 
-Требования: Windows 10/11 x64 с WebView2. Скачайте [Sonora_0.5.4_x64-setup.exe](https://github.com/MixiYT/SonoraDesktop/releases/download/v0.5.4/Sonora_0.5.4_x64-setup.exe) из релиза и откройте файл.
+Используйте [общий репозиторий исходников](https://github.com/MixiYT/Sonora-development-share). Текущий снимок Windows — 0.5.37. В общем дереве лежат Rust-ядро, Discord IPC, сервер комнат и прокси SoundCloud.
 
-## Версия 0.5.4
+Из каталога `sonora-desktop` установите пакеты через `npm ci` и вызовите `./build-windows.ps1`. Понадобятся Node.js 22.12+, Rust GNU, WinLibs MinGW-w64 и WebView2. Подробности, OAuth и пути к результатам описаны в [руководстве по сборке](https://github.com/MixiYT/Sonora-development-share#сборка-windows).
 
-- Текст открывается поверх плеера. Строки с таймкодами перематывают воспроизведение.
-- Доступны выбор поставщика текста, настройка размера, смещения, подсветки и автопрокрутки.
-- SoundCloud временно отключён.
+## Зависимости
 
-## Исходники
+```mermaid
+flowchart LR
+  Vite["Vite / JavaScript"] --> IPC["Tauri / IPC"]
+  IPC --> Native["Rust Windows"]
+  Native --> Core["sonora-core"]
+  Native --> Rich["sonora-discord / Rich Presence"]
+  Native --> Media["yt-dlp / Deno или Node.js / FFmpeg"]
+  Vite --> Room["WebRTC / каталог комнат"]
+  Room -.-> Voice["Discord Voice"]
+  Native --> NSIS["Установщик NSIS"]
+```
 
-В репозитории опубликованы отдельные компоненты интерфейса и модели. Для установки используйте готовый пакет из раздела Releases.
+См. [подробную карту](https://github.com/MixiYT/Sonora-development-share/blob/main/DEPENDENCY-MAP.md), [файловый индекс](https://github.com/MixiYT/Sonora-development-share/blob/main/docs/dependency-index.md) и [историю изменений](https://github.com/MixiYT/Sonora-development-share/blob/main/CHANGELOG.md).
